@@ -31,5 +31,10 @@ class telnet:
         '''Will raise EOFError if connection closed, otherwise will return ascii data'''
         return self.telnet.read_eager().decode()
     def close(self):
+        '''Close telnet connection'''
         self.telnet.close()
+    def reconnect(self):
+        '''Manual reconnection'''
+        from telnetlib import Telnet
+        self.telnet=Telnet(host=self.ip,port=self.port,timeout=self.timeout)
     
