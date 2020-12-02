@@ -23,8 +23,13 @@ class TimeStability:
         from time import sleep
         currtime=self.initime
         while(currtime<=(7*24*60)):
-            if(self.currentTest.run()==False):
-                print("Test failure, test duration ",currtime/2)
-            print("Waiting",currtime,"seconds")
-            sleep(currtime)
-            currtime*=2
+            try:
+                if(self.currentTest.run()==False):
+                    print("Test failure, test duration ",currtime/2)
+                print("Waiting",currtime,"seconds")
+                sleep(currtime)
+                currtime*=2
+            except EOFError:
+                print("Connection got closed by test hardware, reconnecting")
+                self.tn.reconnect()
+        self.tn.close()
